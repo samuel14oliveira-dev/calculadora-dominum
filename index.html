@@ -18,7 +18,7 @@
 <div class="money"><span>R$</span><input id="valor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0,00" aria-describedby="faixas" /></div>
 <fieldset><legend>Postagem</legend><div class="routes">
 <label class="route"><input type="radio" name="rota" value="foz" checked><span><strong>Foz do Iguaçu</strong><small>Tarifa padrão do serviço</small></span></label>
-<label class="route"><input type="radio" name="rota" value="cascavel"><span><strong>Cascavel</strong><small>Acréscimo de 3% sobre o valor do serviço</small></span></label>
+<label class="route"><input type="radio" name="rota" value="cascavel"><span><strong>Cascavel</strong><small>Taxa do serviço com acréscimo de 3 pontos percentuais</small></span></label>
 </div></fieldset>
 <div class="notice">A simulação é uma estimativa. Custos de frete e outras despesas, quando aplicáveis, não estão incluídos.</div>
 </div>
@@ -44,10 +44,10 @@ function calcular(){
  if(base>0&&base<=7000){p=.30;faixa='Até R$ 7.000';}
  else if(base<=10000&&base>7000){p=.25;faixa='R$ 7.000,01 a R$ 10.000';}
  else if(base>10000){p=.20;faixa='Acima de R$ 10.000';}
- const servico=base*p; const adicional=rota==='cascavel'?servico*.03:0; const total=base+servico+adicional;
- document.querySelector('#faixa').textContent=faixa; document.querySelector('#taxa').textContent=p?`${Math.round(p*100)}%`:'—';
+ const servico=base*p; const adicional=rota==='cascavel'?base*.03:0; const taxaFinal=p+(rota==='cascavel'&&p?0.03:0); const total=base+servico+adicional;
+ document.querySelector('#faixa').textContent=faixa; document.querySelector('#taxa').textContent=taxaFinal?`${Math.round(taxaFinal*100)}%`:'—';
  document.querySelector('#servicoBase').textContent=brl.format(servico); document.querySelector('#adicional').textContent=brl.format(adicional); document.querySelector('#total').textContent=brl.format(total);
- document.querySelector('#resumo').textContent=base?`Serviço total: ${brl.format(servico+adicional)}${rota==='cascavel'?' (inclui 3% sobre o serviço).':'.'}`:'Digite um valor para iniciar a simulação.';
+ document.querySelector('#resumo').textContent=base?`Serviço total: ${brl.format(servico+adicional)}${rota==='cascavel'?' (inclui 3 pontos percentuais adicionais).':'.'}`:'Digite um valor para iniciar a simulação.';
 }
 valor.addEventListener('input',calcular);radios.forEach(r=>r.addEventListener('change',calcular));calcular();
 </script>
